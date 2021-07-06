@@ -1,37 +1,28 @@
-import React from 'react';
+import React from "react";
+import "./App.css";
 
-import './App.css';
+// Redux
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import allReducers from "../src/reducers/index";
 
-import NamesContainer from './NamesContainer';
+// components
+import SongList from "./components/SongList";
 
-class App extends React.Component {
+// set Store
+let store = createStore(
+  allReducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
-  state = {
-    names: [
-      'John', 'Abigail', 'X Æ A-Xii', 'Beyonce', 'Khloe Kardashian', 'George Bush', 'Queen Elizabeth', 'Yeezy', 'Ivanka Trump', 'Leonardo DiCaprio', 
-    ],
-    searchTerm: ''
-  }
-
-  editSearchTerm = (e) => {
-    this.setState({searchTerm: e.target.value})
-  }
-
-  dynamicSearch = () => {
-    return this.state.names.filter(name => name.toLowerCase().includes(this.state.searchTerm.toLowerCase()))
-  }
-
-
-    render(){
-      return (
-        <div style = {{textAlign: 'center', paddingTop: '30vh'}}>
-          <input type= 'text' value = {this.state.searchTerm} onChange = {this.editSearchTerm} placeholder = 'Search for a name!'/>
-          <br></br>
-          <h3>These are the important names:</h3>
-          <NamesContainer names = {this.dynamicSearch()}/>
-        </div>
-      );
-    }
+function App() {
+  return (
+    <Provider store={store}>
+      <div className="App">
+        <h1>Song (with the help of redux)</h1>
+        <SongList />
+      </div>
+    </Provider>
+  );
 }
-
 export default App;
